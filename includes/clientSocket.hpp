@@ -1,22 +1,37 @@
 #ifndef CLIENTSCOEKT_H
 #define CLIENTSCOEKT_H
 
+// linux Socket
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+//#include <arpa/inet.h>
+//#include <netdb.h>
+// #include <cmath>
+// #include <vector>
+// #include <cstring>
+
 #include <iostream>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <netdb.h>
-#include <cmath>
 
-#include <vector>
-#include <cstring>
+// winSock API
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <windows.h>
+
+
+
+
+
 #include <stdio.h>
 
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment (lib, "Mswsock.lib")
+#pragma comment (lib, "AdvApi32.lib")
 
+/* linux Socket
 class ClientSocket
 {
 private:
@@ -33,6 +48,22 @@ public:
     char* recieveMessageFromServer();
     bool connectToServer();
 
+};
+*/
+
+class ClientSocketWindows{
+    private:
+        WSADATA wsaData;
+        SOCKET clientSocket = INVALID_SOCKET;
+        sockaddr_in clientService;
+        char recvbuf[512];
+        int iResult;
+        int recbuflen = 512;
+
+    public:
+        int initializeSocket();
+        int createClientSocket();
+        int connectSocketToServer(); 
 };
 
 #endif
