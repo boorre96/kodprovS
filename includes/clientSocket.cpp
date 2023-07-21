@@ -12,7 +12,7 @@ Disconnect.
 */
 #define DEFAULT_PORT 5463
 
-int ClientSocketWindows::initializeSocket(){
+int ClientSocketWindows::initializeSocketWIN(){
 
     /*
     The WSAStartup function is called to initiate use of WS2_32.dll.
@@ -31,11 +31,11 @@ int ClientSocketWindows::initializeSocket(){
     return 1;
 }
 
-int ClientSocketWindows::createClientSocket()
+int ClientSocketWindows::createClientSocketWIN()
 {
     /*
     This finctions tries to create a socket object that the client is going to use.
-    The parameters of the socket:
+    The parameters of the socket function:
     AF_INET = 
     SOCK_STREAM = 
     IPROTO_TCP = 
@@ -50,7 +50,12 @@ int ClientSocketWindows::createClientSocket()
     return 1;
 }
 
-int ClientSocketWindows::connectSocketToServer(){
+int ClientSocketWindows::connectSocketToServerWIN(){
+    if(initializeSocketWIN() == 0)
+        return 0;
+    if (createClientSocketWIN() == 0)
+        return 0;
+    
     /*
     First set the server characteristics.
     
@@ -76,6 +81,24 @@ int ClientSocketWindows::connectSocketToServer(){
         return 1;
 }
 
+char *ClientSocketWindows::recieveMessageFromServerWIN()
+{
+    memset(this->buffer, 0, this->buffSize);
+    bool slut = true;
+    int iteration = 0;
+    while (slut){
+        recv(this->clientSocket, this->collectData, 1, 0);
+        if (this->collectData[0] == '\n'){
+            slut = false;
+        }
+        else{
+            this->buffer[iteration] = this->collectData[0];
+            iteration +=1;
+        }
+    }
+    std::cout <<this->buffer << std::endl;
+    return this->buffer;
+}
 
 // ClientSocket::ClientSocket(int port){
 

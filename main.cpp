@@ -11,15 +11,14 @@ int main(){
     MessageHandler messageHandle;
     ClientSocketWindows client;
 
-    if(client.initializeSocket()){
-        //std::cout << "Client socket initialized..."<< std::endl;
-    }
-    if(client.createClientSocket()){
-         //std::cout << "Connected to server..." << std::endl;
-    }
-    if (client.connectSocketToServer())
-    {
-        //std::cout << "Connected to server..." << std::endl;
+    if(client.connectSocketToServerWIN())
+    {   
+        while (true)
+        {
+            client.recieveMessageFromServerWIN();
+        }
+        
+        
     }
     
     

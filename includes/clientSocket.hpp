@@ -56,14 +56,20 @@ class ClientSocketWindows{
         WSADATA wsaData;
         SOCKET clientSocket = INVALID_SOCKET;
         sockaddr_in clientService;
-        char recvbuf[512];
+        
+        char collectData[1];
+        char buffer[40];
         int iResult;
-        int recbuflen = 512;
+        int buffSize = 40;
 
     public:
-        int initializeSocket();
-        int createClientSocket();
-        int connectSocketToServer(); 
+        int initializeSocketWIN();
+        int createClientSocketWIN();
+        int connectSocketToServerWIN();
+
+        /* This one will be a thread */
+        char* recieveMessageFromServerWIN();
+
 };
 
 #endif
