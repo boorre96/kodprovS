@@ -96,7 +96,6 @@ char *ClientSocketWindows::recieveMessageFromServerWIN()
             iteration +=1;
         }
     }
-    std::cout <<this->buffer << std::endl;
     return this->buffer;
 }
 
