@@ -66,8 +66,6 @@ class ClientSocketWindows{
         int initializeSocketWIN();
         int createClientSocketWIN();
         int connectSocketToServerWIN();
-
-        /* This one will be a thread */
         char* recieveMessageFromServerWIN();
 
 };

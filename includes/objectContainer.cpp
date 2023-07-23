@@ -8,6 +8,15 @@ ObjectContainer::~ObjectContainer(){
 
 }
 
+/**
+ * The function checks if an object with a given ID exists in either category 1 or category 2 of the
+ * object container.
+ * 
+ * @param object The "object" parameter is an object of type "Object" that is being checked for
+ * existence in the ObjectContainer.
+ * 
+ * @return a boolean value.
+ */
 bool ObjectContainer::checkIdIdExists(Object &object){
     if (object.getType() == 1 || object.getType() == 2 ){
         if (this->sizeOfContainerCat1() < 1)
@@ -37,6 +46,11 @@ bool ObjectContainer::checkIdIdExists(Object &object){
     
 }
 
+/**
+ * The function adds an object to a container based on its type.
+ * 
+ * @param object The "object" parameter is a reference to an instance of the Object class.
+ */
 void ObjectContainer::addObjectToContainer(Object &object){
     if (object.getType() == 1 || object.getType() == 2){
         this->objectCategori1.push_back(object);
@@ -46,6 +60,14 @@ void ObjectContainer::addObjectToContainer(Object &object){
     }
 }
 
+/**
+ * The function updates the coordinates and color of an object in a container based on its type and
+ * distance.
+ * 
+ * @param object The `object` parameter is an object of type `Object` that needs to be updated in the
+ * container.
+ * @param distance The distance parameter represents the distance of the object from a reference point.
+ */
 void ObjectContainer::updateObjectInContainer(Object &object, int distance){
     if(object.getType() == 1 || object.getType() == 2){
         for (int i = 0; i < this->objectCategori1.size(); i+=1){
@@ -78,6 +100,9 @@ int ObjectContainer::sizeOfContainerCat2(){
     return this->objectCategori2.size();
 }
 
+/**
+ * The function "outputObjects" outputs information about objects stored in two different categories.
+ */
 void ObjectContainer::outputObjects(){
     
     std::cout << "Categori 1" << std::endl;

@@ -1,28 +1,26 @@
+/**
+ * The above code is a C++ implementation of a client socket that connects to a server and receives
+ * messages from it.
+ * 
+ * @return The function `recieveMessageFromServerWIN()` returns a pointer to a character array
+ * (`char*`).
+ */
 #define WIN32_LEAN_AND_MEAN
 
 #include "clientSocket.hpp"
-/*
-Initialize Winsock.
-Create a socket.
-Bind the socket.
-Listen on the socket for a client.
-Accept a connection from a client.
-Receive and send data.
-Disconnect.
-*/
+
 #define DEFAULT_PORT 5463
 
+/**
+ * The function initializes the Windows socket by calling the WSAStartup function and returns 1 if
+ * successful, otherwise returns 0.
+ * 
+ * @return an integer value. If the WSAStartup function call is successful (iResult is equal to 0), the
+ * function will return 1. Otherwise, if the WSAStartup function call fails, the function will return
+ * 0.
+ */
 int ClientSocketWindows::initializeSocketWIN(){
 
-    /*
-    The WSAStartup function is called to initiate use of WS2_32.dll.
-    
-    The WSADATA structure contains information about the Windows Sockets 
-    implementation. The MAKEWORD(2,2) parameter of WSAStartup makes a 
-    request for version 2.2 of Winsock on the system, and sets the passed
-    version as the highest version of Windows Sockets support that 
-    the caller can use.
-    */
     iResult = WSAStartup(MAKEWORD(2,2), &this->wsaData);
     if(iResult!= 0){
         std::clog << "WSAStartup failed!" << std::endl;
@@ -31,18 +29,18 @@ int ClientSocketWindows::initializeSocketWIN(){
     return 1;
 }
 
+/**
+ * The function creates a client socket in a Windows environment.
+ * 
+ * @return an integer value. If the socket creation is successful, it returns 1. If the socket creation
+ * fails, it returns 0.
+ */
 int ClientSocketWindows::createClientSocketWIN()
 {
-    /*
-    This finctions tries to create a socket object that the client is going to use.
-    The parameters of the socket function:
-    AF_INET = 
-    SOCK_STREAM = 
-    IPROTO_TCP = 
-    */
+    
    clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if(clientSocket == INVALID_SOCKET){
-        std::cout << "Socket faild with error" + WSAGetLastError() << std::endl;
+        std::clog << "Socket faild with error" + WSAGetLastError() << std::endl;
         WSACleanup();
         return 0;
     }
@@ -50,30 +48,30 @@ int ClientSocketWindows::createClientSocketWIN()
     return 1;
 }
 
+/**
+ * The function `connectSocketToServerWIN` connects a client socket to a server using the Windows API.
+ * 
+ * @return an integer value. If the connection to the server is successful, it returns 1. If there is
+ * an error in initializing the socket or creating the client socket, it returns 0.
+ */
 int ClientSocketWindows::connectSocketToServerWIN(){
     if(initializeSocketWIN() == 0)
         return 0;
     if (createClientSocketWIN() == 0)
         return 0;
     
-    /*
-    First set the server characteristics.
-    
-    */
+  
     this->clientService.sin_family = AF_INET;
     this->clientService.sin_addr.s_addr = inet_addr("127.0.0.1");
     this->clientService.sin_port = htons(DEFAULT_PORT);
     
-    /*
-    Connect to server.
-    */ 
+    
     iResult = connect(this->clientSocket,(SOCKADDR *)&clientService, sizeof(clientService));
     if (iResult == SOCKET_ERROR) {
         int error = WSAGetLastError();
-        std::cout << "Could not connect to server! Error code: " << error << std::endl;
+        std::clog << "Could not connect to server! Error code: " << error << std::endl;
         closesocket(this->clientSocket);
         this->clientSocket = INVALID_SOCKET;
-        std::cout << "Could not connect to server!"<< std::endl;
         WSACleanup();
         return 0;
     }
@@ -81,8 +79,16 @@ int ClientSocketWindows::connectSocketToServerWIN(){
         return 1;
 }
 
-char *ClientSocketWindows::recieveMessageFromServerWIN()
-{
+
+
+/**
+ * The function `recieveMessageFromServerWIN` receives a message from a server using a Windows client
+ * socket.
+ * 
+ * @return a pointer to a character array (string) called "buffer".
+ */
+char *ClientSocketWindows::recieveMessageFromServerWIN(){
+   
     memset(this->buffer, 0, this->buffSize);
     bool slut = true;
     int iteration = 0;
